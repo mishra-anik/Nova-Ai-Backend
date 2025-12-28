@@ -6,7 +6,7 @@ const authRouter = Router();
 authRouter.get("/", (req, res) => {
   res.send("Auth route is working");
 }
-
+);
 authRouter.post("/register",register);
 
 authRouter.post("/login", login);
