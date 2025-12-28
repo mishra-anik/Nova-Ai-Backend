@@ -20,6 +20,9 @@ app.use(
 
 app.use("/api/auth", authRouter)
 
+app.get("/", (req, res) => {
+    res.send("Hello, this will appear in the browser!");
+});
 
 
 export default app;
