@@ -1,0 +1,15 @@
+{
+  "version": 1.0.0,
+  "builds": [
+    {
+      "src": "server.mjs",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/server.mjs"
+    }
+  ]
+}
