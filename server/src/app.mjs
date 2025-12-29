@@ -8,6 +8,14 @@ import cors from "cors";
 
 const app = express();
 
+// Log all requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  console.log('Headers:', req.headers);
+  next();
+});
+
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(
