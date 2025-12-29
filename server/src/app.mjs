@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
 	cors({
-		origin: "https://nova-ai-backend-tiyg.onrender.com",
+		origin: "http://localhost:5173",
 		credentials: true,
 	})
 );
