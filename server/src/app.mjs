@@ -6,23 +6,17 @@ import cookieParser from "cookie-parser";
 
 import cors from "cors";
 
-const app = express();  
+const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
+	cors({
+		origin: "https://nova-ai-backend-tiyg.onrender.com",
+		credentials: true,
+	})
 );
 
-
-app.use("/api/auth", authRouter)
-
-app.get("/", (req, res) => {
-    res.send("Hello, this will appear in the browser!");
-});
-
+app.use("/api/auth", authRouter);
 
 export default app;

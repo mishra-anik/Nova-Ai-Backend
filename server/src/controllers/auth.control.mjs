@@ -1,11 +1,17 @@
 import User from "../models/user.model.mjs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import redis from "../db/redis.mjs";
 
 export const authMe = async (req, res) => {
 	try {
 		const token = req.cookies.token;
 		if (!token) {
+			return res.status(401).json({ message: "Unauthorized" });
+		}
+
+		const isBlacklisted = await redis.get(`blacklist:${token}`);
+		if (isBlacklisted) {
 			return res.status(401).json({ message: "Unauthorized" });
 		}
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -98,3 +104,35 @@ export const login = async (req, res) => {
 		token,
 	});
 };
+
+
+export const logout = async (req, res) => {
+  try {
+    const token = req.cookies?.token;
+
+    if (token) {
+      try {
+        await redis.set(
+          `blacklist:${token}`,
+          "true",
+          "EX",
+          60 * 60 * 24 * 7
+        );
+      } catch (redisErr) {
+        console.error("Redis failed:", redisErr.message);
+      }
+    }
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+    });
+
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    console.error("Logout error:", err);
+    res.status(500).json({ message: "Logout failed" });
+  }
+};
+
