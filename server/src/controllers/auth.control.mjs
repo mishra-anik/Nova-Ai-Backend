@@ -51,8 +51,8 @@ export const register = async (req, res) => {
 
 		res.cookie("token", token, {
 			httpOnly: true,
-			secure: false,
-			sameSite: "lax",
+			secure: true,
+			sameSite: "none",
 			path: "/",
 			maxAge: 2 * 24 * 60 * 60 * 1000,
 		});
@@ -90,11 +90,10 @@ export const login = async (req, res) => {
 	}
 
 	const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-
 	res.cookie("token", token, {
 		httpOnly: true,
-		secure: false,
-		sameSite: "lax",
+		secure: true,
+		sameSite: "none",
 		path: "/",
 		maxAge: 2 * 24 * 60 * 60 * 1000,
 	});
@@ -105,34 +104,32 @@ export const login = async (req, res) => {
 	});
 };
 
-
 export const logout = async (req, res) => {
-  try {
-    const token = req.cookies?.token;
+	try {
+		const token = req.cookies?.token;
 
-    if (token) {
-      try {
-        await redis.set(
-          `blacklist:${token}`,
-          "true",
-          "EX",
-          60 * 60 * 24 * 7
-        );
-      } catch (redisErr) {
-        console.error("Redis failed:", redisErr.message);
-      }
-    }
+		if (token) {
+			try {
+				await redis.set(
+					`blacklist:${token}`,
+					"true",
+					"EX",
+					60 * 60 * 24 * 7
+				);
+			} catch (redisErr) {
+				console.error("Redis failed:", redisErr.message);
+			}
+		}
 
-    res.clearCookie("token", {
-      httpOnly: true,
-      sameSite: "lax",
-      path: "/",
-    });
+		res.clearCookie("token", {
+			httpOnly: true,
+			sameSite: "lax",
+			path: "/",
+		});
 
-    res.status(200).json({ message: "Logged out successfully" });
-  } catch (err) {
-    console.error("Logout error:", err);
-    res.status(500).json({ message: "Logout failed" });
-  }
+		res.status(200).json({ message: "Logged out successfully" });
+	} catch (err) {
+		console.error("Logout error:", err);
+		res.status(500).json({ message: "Logout failed" });
+	}
 };
-
