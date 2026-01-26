@@ -1,8 +1,8 @@
 import { Server } from "socket.io";
-import { embeddingResponse, generateResponse } from "../service/ai.service.mjs";
-import { createMemory, queryMemory } from "../service/vector.service.mjs";
-import User from "../models/user.model.mjs";
-import Message from "../models/message.model.mjs";
+import { embeddingResponse, generateResponse } from "../service/ai.service.js";
+import { createMemory, queryMemory } from "../service/vector.service.js";
+import User from "../models/user.model.js";
+import Message from "../models/message.model.js";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
 

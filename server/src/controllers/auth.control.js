@@ -1,7 +1,7 @@
-import User from "../models/user.model.mjs";
+import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import redis from "../db/redis.mjs";
+import redis from "../db/redis.js";
 
 export const authMe = async (req, res) => {
 	try {
@@ -24,7 +24,6 @@ export const authMe = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
-
 export const register = async (req, res) => {
 	const { username, email, password } = req.body;
 	console.log(req.body);
@@ -48,7 +47,7 @@ export const register = async (req, res) => {
 		});
 
 		const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-
+ 
 		res.cookie("token", token, {
 			httpOnly: true,
 			secure: true,
