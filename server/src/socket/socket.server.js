@@ -10,7 +10,7 @@ const setupSocketServer = (httpServer) => {
 	console.log("socket")
 	const io = new Server(httpServer, {
 		cors: {
-			origin: "http://localhost:5173",
+			origin: "https://nova-ai-wine.vercel.app",
 			methods: ["GET", "POST"],
 			credentials: true,
 		},
