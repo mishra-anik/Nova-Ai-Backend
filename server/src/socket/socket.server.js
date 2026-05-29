@@ -100,7 +100,7 @@ const setupSocketServer = (httpServer) => {
 				Message.create({
 					message: response,
 					user: socket.user._id,
-					role: "assistant",
+					role: "model",
 				}),
 				embeddingResponse(response),
 			]);
