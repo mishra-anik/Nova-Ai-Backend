@@ -3,18 +3,12 @@ import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({});
 
 export const generateResponse = async (prompt) => {
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: [
-      {
-        role: "user",
-        parts: [{ text: prompt }],
-      },
-    ],
-    config: {
-      temperature: 1.5,
-      systemInstruction: `
-You are Nova AI.
+	const response = await ai.models.generateContent({
+		model: "gemini-2.5-flash",
+		contents: prompt,
+		config: {
+			temperature: 1.5,
+			systemInstruction: `You are Nova AI.
 
 Rules:
 - Reply in casual Gen-Z tone.
@@ -26,21 +20,22 @@ Rules:
 - Avoid formal or robotic language.
 - Do not use emojis.
 - For coding questions, give direct solution first.
-`,
-    },
-  });
+- If you don't know the answer, say "I don't know" instead of making something up.
+- Always be honest and straightforward.`
+		},
+	});
 
-  return response.text;
+	return response.text;
 };
 
 export const embeddingResponse = async (prompt) => {
-  const response = await ai.models.embedContent({
-    model: "gemini-embedding-001",
-    contents: prompt,
-    config: {
-      outputDimensionality: 768,
-    },
-  });
+	const response = await ai.models.embedContent({
+		model: "gemini-embedding-001",
+		contents: prompt,
+		config: {
+			outputDimensionality: 768,
+		},
+	});
 
-  return response.embeddings[0].values;
+	return response.embeddings[0].values;
 };
